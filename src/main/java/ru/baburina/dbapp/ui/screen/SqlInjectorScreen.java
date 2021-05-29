@@ -7,11 +7,13 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import org.hibernate.transform.AliasToEntityMapResultTransformer;
 import ru.baburina.dbapp.db.HibernateUtil;
 import ru.baburina.dbapp.ui.MainScene;
 import ru.baburina.dbapp.ui.api.AppScreen;
 
 import java.util.List;
+import java.util.Map;
 
 public class SqlInjectorScreen implements AppScreen {
 
@@ -56,6 +58,7 @@ public class SqlInjectorScreen implements AppScreen {
 
     private void onExecute() {
         var sqlQuery = this.sql.getText();
+        this.sqlResult.clear();
 
         if (sqlQuery == null || sqlQuery.length() == 0) {
             return;
@@ -63,7 +66,8 @@ public class SqlInjectorScreen implements AppScreen {
 
         try(var session = HibernateUtil.getSessionFactory().openSession()) {
             var query = session.createSQLQuery(sqlQuery);
-            var result = (List<Object[]>)query.list();
+            query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
+            List<Map<String, Object>> result = query.list();
             this.showResult(result);
         } catch (Throwable ex) {
             var alert = new Alert(Alert.AlertType.ERROR);
@@ -73,18 +77,30 @@ public class SqlInjectorScreen implements AppScreen {
         }
     }
 
-    private void showResult(List<Object[]> resultList) {
+    private void showResult(List<Map<String, Object>> resultList) {
         if (resultList == null || resultList.size() == 0) {
             this.sqlResult.setText("[]");
             return;
         }
         var sb = new StringBuilder();
         for (var a : resultList) {
-            for (var b: a) {
-                sb.append(b.toString());
-                sb.append("\n");
-            }
+            sb.append(this.showEntity(a));
         }
         this.sqlResult.setText(sb.toString());
+    }
+
+    private String showEntity(Map<String, Object> entity) {
+        var sb = new StringBuilder();
+        sb.append("{ ");
+        if (entity != null && entity.size() > 0) {
+            for (var pair : entity.entrySet()) {
+                sb.append(pair.getKey());
+                sb.append(": ");
+                sb.append(pair.getValue().toString());
+                sb.append(", ");
+            }
+        }
+        sb.append("}\n");
+        return sb.toString();
     }
 }

@@ -1,6 +1,7 @@
 package ru.baburina.dbapp.app;
 
 import ru.baburina.dbapp.db.entities.AaUsersEntity;
+import ru.baburina.dbapp.db.entities.UserEntity;
 
 public class AppState {
 
@@ -19,13 +20,13 @@ public class AppState {
 
     private AppState() {}
 
-    private AaUsersEntity user;
+    private UserEntity user;
 
-    public AaUsersEntity getUser() {
+    public UserEntity getUser() {
         return user;
     }
 
-    public void setUser(AaUsersEntity user) {
+    public void setUser(UserEntity user) {
         this.user = user;
     }
 }

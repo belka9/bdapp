@@ -3,6 +3,7 @@ package ru.baburina.dbapp.ui;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
+import ru.baburina.dbapp.db.HibernateUtil;
 import ru.baburina.dbapp.ui.api.AppScreen;
 import ru.baburina.dbapp.ui.screen.Login;
 import ru.baburina.dbapp.ui.screen.MainMenu;
@@ -22,6 +23,7 @@ public class MainScene {
         baseLayer = new StackPane();
         scene = new Scene(baseLayer, 600, 600);
 
+        initDatabase();
         initScreens();
     }
 
@@ -29,6 +31,10 @@ public class MainScene {
         screens.put(Login.id, Login::new);
         screens.put(MainMenu.id, MainMenu::new);
         screens.put(SqlInjectorScreen.id, SqlInjectorScreen::new);
+    }
+
+    private static void initDatabase() {
+        try(var session = HibernateUtil.getSessionFactory().openSession()) {}
     }
 
     public static Scene getScene() {

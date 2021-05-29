@@ -1,13 +1,12 @@
 package ru.baburina.dbapp.ui.screen;
 
-import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import ru.baburina.dbapp.app.AppState;
-import ru.baburina.dbapp.db.UserRepository;
+import ru.baburina.dbapp.db.repository.UserRepository;
 import ru.baburina.dbapp.ui.MainScene;
 import ru.baburina.dbapp.ui.api.AppScreen;
 
@@ -58,7 +57,7 @@ public class Login implements AppScreen {
         var login = this.loginField.getText();
         var password = this.passwordField.getText();
 
-        var user = repository.getUser(login, password);
+        var user = repository.find(login, password);
 
         if (user == null) {
             var alert = new Alert(Alert.AlertType.ERROR);
@@ -69,6 +68,7 @@ public class Login implements AppScreen {
                         this.loginField.clear();
                         this.passwordField.clear();
                     });
+            return;
         }
 
         AppState.getInstance().setUser(user);
