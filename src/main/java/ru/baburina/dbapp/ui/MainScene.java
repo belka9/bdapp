@@ -6,6 +6,7 @@ import javafx.scene.layout.StackPane;
 import ru.baburina.dbapp.ui.api.AppScreen;
 import ru.baburina.dbapp.ui.screen.Login;
 import ru.baburina.dbapp.ui.screen.MainMenu;
+import ru.baburina.dbapp.ui.screen.SqlInjectorScreen;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,6 +28,7 @@ public class MainScene {
     private static void initScreens() {
         screens.put(Login.id, Login::new);
         screens.put(MainMenu.id, MainMenu::new);
+        screens.put(SqlInjectorScreen.id, SqlInjectorScreen::new);
     }
 
     public static Scene getScene() {

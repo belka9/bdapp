@@ -1,8 +1,9 @@
 package ru.baburina.dbapp.ui.screen;
 
 import javafx.scene.Node;
-import javafx.scene.control.Label;
-import javafx.scene.layout.StackPane;
+import javafx.scene.control.Button;
+import javafx.scene.layout.VBox;
+import ru.baburina.dbapp.ui.MainScene;
 import ru.baburina.dbapp.ui.api.AppScreen;
 
 public class MainMenu implements AppScreen {
@@ -11,11 +12,14 @@ public class MainMenu implements AppScreen {
 
     @Override
     public Node init() {
-        var label = new Label("MainMenu");
+        var sqlInjector = new Button("SQL");
+        sqlInjector.setOnAction(event -> {
+            MainScene.show(SqlInjectorScreen.id);
+        });
 
-        var pane = new StackPane();
-        pane.getChildren().add(label);
+        var VBox = new VBox();
+        VBox.getChildren().add(sqlInjector);
 
-        return pane;
+        return VBox;
     }
 }
