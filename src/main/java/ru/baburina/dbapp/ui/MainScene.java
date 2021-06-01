@@ -8,6 +8,7 @@ import ru.baburina.dbapp.ui.api.AppScreen;
 import ru.baburina.dbapp.ui.screen.Login;
 import ru.baburina.dbapp.ui.screen.MainMenu;
 import ru.baburina.dbapp.ui.screen.SqlInjectorScreen;
+import ru.baburina.dbapp.ui.screen.crud.users.UserCrudScreen;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,6 +32,7 @@ public class MainScene {
         screens.put(Login.id, Login::new);
         screens.put(MainMenu.id, MainMenu::new);
         screens.put(SqlInjectorScreen.id, SqlInjectorScreen::new);
+        screens.put(UserCrudScreen.id, UserCrudScreen::new);
     }
 
     private static void initDatabase() {
