@@ -1,6 +1,5 @@
 package ru.baburina.dbapp.app;
 
-import ru.baburina.dbapp.db.entities.AaUsersEntity;
 import ru.baburina.dbapp.db.entities.UserEntity;
 
 public class AppState {

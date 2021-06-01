@@ -1,5 +1,6 @@
 package ru.baburina.dbapp.ui.screen.crud.common;
 
+import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -14,16 +15,15 @@ public abstract class AbstractCrudTableBuilder<T> {
 
     protected abstract List<TableColumn<T, ?>> getColumns();
 
-    public TableView<T> build(BiConsumer<T, Integer> onEdit, BiConsumer<T, Integer> onDelete) {
+    public TableView<T> build(BiConsumer<T, ActionEvent> onEdit, BiConsumer<T, Integer> onDelete) {
         var table = new TableView<T>();
         table.setEditable(true);
 
         table.getColumns().addAll(this.getColumns());
 
         table.getColumns().addAll(Arrays.asList(
-                this.createActionColumn("Edit", onEdit),
-                this.createActionColumn("Delete", onDelete)));
-
+                this.createActionColumn("Edit", (i, e, idx) -> onEdit.accept(i, e)),
+                this.createActionColumn("Delete", (i, e, idx) -> onDelete.accept(i, idx))));
 
         return table;
 
@@ -37,7 +37,7 @@ public abstract class AbstractCrudTableBuilder<T> {
         return column;
     }
 
-    private TableColumn<T, Void> createActionColumn(String buttonName, BiConsumer<T, Integer> onClick) {
+    private TableColumn<T, Void> createActionColumn(String buttonName, TriConsumer<T, ActionEvent, Integer> onClick) {
         var column = new TableColumn<T, Void>();
         column.setCellFactory(c -> new TableCell<T, Void>() {
             private final Button btn = new Button(buttonName);
@@ -45,7 +45,7 @@ public abstract class AbstractCrudTableBuilder<T> {
                 btn.setOnAction(event -> {
                     var idx = getIndex();
                     var item = getTableView().getItems().get(idx);
-                    onClick.accept(item, idx);
+                    onClick.accept(item, event, idx);
                 });
             }
             @Override
@@ -59,5 +59,9 @@ public abstract class AbstractCrudTableBuilder<T> {
             }
         });
         return column;
+    }
+
+    private interface TriConsumer<T, R, V> {
+        void accept(T t, R r, V v);
     }
 }

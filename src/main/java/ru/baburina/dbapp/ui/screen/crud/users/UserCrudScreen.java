@@ -15,7 +15,7 @@ public class UserCrudScreen extends AbstractCrudScreen<UserViewModel> {
     private final UserService service;
 
     public UserCrudScreen() {
-        super(new UsersTableBuilder());
+        super(new UsersTableBuilder(), new UserFormBuilder());
         this.service = new UserService(new UserRepository());
     }
 
@@ -27,5 +27,35 @@ public class UserCrudScreen extends AbstractCrudScreen<UserViewModel> {
     @Override
     protected List<UserViewModel> getItems() {
         return this.service.getUsers().stream().map(UserViewModel::new).collect(Collectors.toList());
+    }
+
+    @Override
+    protected UserViewModel emptyModel() {
+        return new UserViewModel();
+    }
+
+    @Override
+    protected boolean create(UserViewModel model) {
+        return this.tryExec(() -> this.service.createUser(model.toAppModel()));
+    }
+
+    @Override
+    protected boolean update(UserViewModel model) {
+        return this.tryExec(() -> this.service.updateUser(model.toAppModel()));
+    }
+
+    @Override
+    protected boolean delete(UserViewModel model) {
+        return this.tryExec(() -> this.service.deleteUser(model.toAppModel()));
+    }
+
+    private boolean tryExec(Runnable action) {
+        try {
+            action.run();
+            return true;
+        } catch (Throwable ex) {
+            System.err.println(ex);
+            return false;
+        }
     }
 }

@@ -12,13 +12,16 @@ import ru.baburina.dbapp.ui.screen.crud.users.UserCrudScreen;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Stack;
 import java.util.function.Supplier;
 
+//Управление экранами, инициализация приложения
 public class MainScene {
 
     private static Scene scene;
     private static StackPane baseLayer;
     private static Map<String, Supplier<AppScreen>> screens = new HashMap<>();
+    private static Stack<Node> nodeStack = new Stack<>();
 
     static {
         baseLayer = new StackPane();
@@ -51,15 +54,24 @@ public class MainScene {
         putNode(node.init());
     }
 
-    public static void putNode(Node node) {
+    private static void putNode(Node node) {
+
+        var children = baseLayer.getChildren();
+        if (children.size() > 0) {
+            nodeStack.push(children.get(0));
+            children.remove(0);
+        }
         baseLayer.getChildren().add(node);
     }
 
     public static void popNode() {
-        var length = baseLayer.getChildren().size();
-        if (length <= 0) {
-            return;
+        var children = baseLayer.getChildren();
+        if (children.size() > 0) {
+            children.remove(0);
         }
-        baseLayer.getChildren().remove(length - 1);
+        if (nodeStack.size() > 0) {
+            var prevNode = nodeStack.pop();
+            children.add(prevNode);
+        }
     }
 }
