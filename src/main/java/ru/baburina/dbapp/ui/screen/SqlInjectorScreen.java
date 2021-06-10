@@ -1,32 +1,35 @@
 package ru.baburina.dbapp.ui.screen;
 
+import javafx.collections.FXCollections;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.MapValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.hibernate.transform.AliasToEntityMapResultTransformer;
+import ru.baburina.dbapp.app.services.SQLService;
 import ru.baburina.dbapp.db.HibernateUtil;
 import ru.baburina.dbapp.ui.MainScene;
 import ru.baburina.dbapp.ui.api.AppScreen;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class SqlInjectorScreen implements AppScreen {
 
     public static final String id = "SqlInjectorScreen";
 
     private TextArea sql;
-    private TextArea sqlResult;
+    private VBox result;
+    private final int pageSize = 1;
+    private SQLService service = new SQLService();
 
     @Override
     public Node init() {
         this.sql = new TextArea();
-        this.sqlResult = new TextArea();
-        sqlResult.setEditable(false);
+        this.result = new VBox();
 
         var executeButton = new Button("Execute");
         executeButton.setOnAction(event -> {
@@ -46,29 +49,28 @@ public class SqlInjectorScreen implements AppScreen {
         line1.getChildren().add(this.sql);
         line1.getChildren().add(buttonBlock);
 
-        var line2 = new HBox();
-        line2.getChildren().add(this.sqlResult);
-
         var stack = new VBox();
         stack.getChildren().add(line1);
-        stack.getChildren().add(line2);
+        stack.getChildren().add(this.result);
 
         return stack;
     }
 
     private void onExecute() {
-        var sqlQuery = this.sql.getText();
-        this.sqlResult.clear();
+        final var sqlQuery = this.sql.getText();
 
-        if (sqlQuery == null || sqlQuery.length() == 0) {
-            return;
-        }
+        try {
+            var resultCount = this.service.getCount(sqlQuery);
+            var pages = this.countPages(resultCount);
 
-        try(var session = HibernateUtil.getSessionFactory().openSession()) {
-            var query = session.createSQLQuery(sqlQuery);
-            query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
-            List<Map<String, Object>> result = query.list();
-            this.showResult(result);
+            var pagination = new Pagination(pages);
+            pagination.setPageFactory(page -> {
+                var items = this.service.getItems(sqlQuery, page + 1, this.pageSize);
+                return showResults(items);
+            });
+
+            this.result.getChildren().clear();
+            this.result.getChildren().add(pagination);
         } catch (Throwable ex) {
             var alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Ошибка");
@@ -77,30 +79,32 @@ public class SqlInjectorScreen implements AppScreen {
         }
     }
 
-    private void showResult(List<Map<String, Object>> resultList) {
-        if (resultList == null || resultList.size() == 0) {
-            this.sqlResult.setText("[]");
-            return;
+    private Node showResults(List<Map<String, Object>> items) {
+        List<String> columns = new ArrayList<>();
+        if (items.size() > 0) {
+            var map = items.stream().findFirst();
+            columns = new ArrayList<>(map.get().keySet());
         }
-        var sb = new StringBuilder();
-        for (var a : resultList) {
-            sb.append(this.showEntity(a));
-        }
-        this.sqlResult.setText(sb.toString());
+        var tableView = new TableView<Map<String, Object>>();
+        var tableColumns = columns.stream().map(c -> {
+            var column = new TableColumn<Map<String, Object>, Object>(c);
+            column.setCellValueFactory(new MapValueFactory(c));
+            column.setMinWidth(100);
+            return column;
+        }).collect(Collectors.toList());
+
+        tableView.getColumns().setAll(tableColumns);
+        tableView.setItems(FXCollections.observableList(items));
+
+        var scrollPane = new ScrollPane();
+        scrollPane.setContent(tableView);
+        return scrollPane;
     }
 
-    private String showEntity(Map<String, Object> entity) {
-        var sb = new StringBuilder();
-        sb.append("{ ");
-        if (entity != null && entity.size() > 0) {
-            for (var pair : entity.entrySet()) {
-                sb.append(pair.getKey());
-                sb.append(": ");
-                sb.append(pair.getValue().toString());
-                sb.append(", ");
-            }
+    private int countPages(int totalResult) {
+        if (totalResult == 0) {
+            return 0;
         }
-        sb.append("}\n");
-        return sb.toString();
+        return totalResult / this.pageSize + (totalResult%this.pageSize != 0 ? 1 : 0);
     }
 }

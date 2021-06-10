@@ -25,8 +25,13 @@ public class UserCrudScreen extends AbstractCrudScreen<UserViewModel> {
     }
 
     @Override
-    protected List<UserViewModel> getItems() {
-        return this.service.getUsers().stream().map(UserViewModel::new).collect(Collectors.toList());
+    protected List<UserViewModel> getItems(int page, int pageSize) {
+        return this.service.getEntitesPage(page, pageSize).stream().map(UserViewModel::new).collect(Collectors.toList());
+    }
+
+    @Override
+    protected int getTotalCount() {
+        return this.service.getCount();
     }
 
     @Override

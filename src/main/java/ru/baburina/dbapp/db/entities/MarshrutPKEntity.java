@@ -1,29 +1,28 @@
 package ru.baburina.dbapp.db.entities;
 
 import javax.persistence.Column;
+import javax.persistence.Embeddable;
 import javax.persistence.Id;
 import java.io.Serializable;
+import java.util.Objects;
 
-public class AaMarshrutEntityPK implements Serializable {
-    private int mNum;
+@Embeddable
+public class MarshrutPKEntity implements Serializable {
+    private int num;
     private int stationId;
 
-    @Column(name = "m_num")
-    @Id
-    public int getmNum() {
-        return mNum;
+    @Column(name = "num")
+    public int getNum() {
+        return num;
     }
-
-    public void setmNum(int mNum) {
-        this.mNum = mNum;
+    public void setNum(int num) {
+        this.num = num;
     }
 
     @Column(name = "station_id")
-    @Id
     public int getStationId() {
         return stationId;
     }
-
     public void setStationId(int stationId) {
         this.stationId = stationId;
     }
@@ -32,19 +31,12 @@ public class AaMarshrutEntityPK implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
-        AaMarshrutEntityPK that = (AaMarshrutEntityPK) o;
-
-        if (mNum != that.mNum) return false;
-        if (stationId != that.stationId) return false;
-
-        return true;
+        MarshrutPKEntity that = (MarshrutPKEntity) o;
+        return num == that.num && stationId == that.stationId;
     }
 
     @Override
     public int hashCode() {
-        int result = mNum;
-        result = 31 * result + stationId;
-        return result;
+        return Objects.hash(num, stationId);
     }
 }

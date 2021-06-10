@@ -1,21 +1,22 @@
 package ru.baburina.dbapp.db.entities;
 
+
 import javax.persistence.*;
 
 @Entity
-@Table(name = "aa_station", schema = "public", catalog = "postgres")
-public class AaStationEntity {
-    private int idS;
+@Table(name = "station", schema = "public", catalog = "postgres")
+public class StationEntity {
+    private int id;
     private String name;
 
     @Id
-    @Column(name = "id_s")
-    public int getIdS() {
-        return idS;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    public int getId() {
+        return id;
     }
-
-    public void setIdS(int idS) {
-        this.idS = idS;
+    public void setId(int id) {
+        this.id = id;
     }
 
     @Basic
@@ -23,7 +24,6 @@ public class AaStationEntity {
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
@@ -32,10 +32,9 @@ public class AaStationEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+        StationEntity that = (StationEntity) o;
 
-        AaStationEntity that = (AaStationEntity) o;
-
-        if (idS != that.idS) return false;
+        if (id != that.id) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
 
         return true;
@@ -43,7 +42,7 @@ public class AaStationEntity {
 
     @Override
     public int hashCode() {
-        int result = idS;
+        int result = id;
         result = 31 * result + (name != null ? name.hashCode() : 0);
         return result;
     }

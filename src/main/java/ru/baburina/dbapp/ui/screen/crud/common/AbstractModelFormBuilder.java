@@ -5,15 +5,16 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.util.converter.DateStringConverter;
 import javafx.util.converter.NumberStringConverter;
+import tornadofx.control.DateTimePicker;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.function.Consumer;
@@ -65,7 +66,7 @@ public abstract class AbstractModelFormBuilder<VM> {
             case NUMBER_FIELD:
                 return this.createNumberField(descriptor.placeholder, () -> (DoubleProperty) descriptor.getter.apply(model));
             case DATE_FIELD:
-                return this.createDateField(descriptor.placeholder, () -> (ObjectProperty<Date>) descriptor.getter.apply(model));
+                return this.createDateField(descriptor.placeholder, () -> (ObjectProperty<LocalDateTime>) descriptor.getter.apply(model));
             default:
                 throw new RuntimeException("not supported");
         }
@@ -100,14 +101,13 @@ public abstract class AbstractModelFormBuilder<VM> {
         return textField;
     }
 
-    private Node createDateField(String placeholder, Supplier<ObjectProperty<Date>> getter) {
-        var textField = new TextField();
+    private Node createDateField(String placeholder, Supplier<ObjectProperty<LocalDateTime>> getter) {
+        var datePicker = new DateTimePicker();
         if (placeholder != null) {
-            textField.setPromptText(placeholder);
+            datePicker.setPromptText(placeholder);
         }
-        textField.setTextFormatter(new TextFormatter<>(new DateStringConverter()));
-        textField.textProperty().bindBidirectional(getter.get(), new DateStringConverter());
-        return textField;
+        datePicker.dateTimeValueProperty().bindBidirectional(getter.get());
+        return datePicker;
     }
 
 

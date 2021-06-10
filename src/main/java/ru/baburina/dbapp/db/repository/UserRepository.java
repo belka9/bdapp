@@ -23,8 +23,8 @@ public class UserRepository extends AbstractRepository<UserEntity, Integer> {
     @Override
     public int count() {
         return this.run(s -> {
-            var query = s.createQuery("SELECT COUNT(*) FROM UserEntity u", Integer.class);
-            return query.getSingleResult();
+            var query = s.createQuery("SELECT COUNT(*) FROM UserEntity u", Long.class);
+            return query.getSingleResult().intValue();
         });
     }
 

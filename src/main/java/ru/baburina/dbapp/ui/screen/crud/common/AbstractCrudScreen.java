@@ -6,6 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Pagination;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -24,6 +25,7 @@ public abstract class AbstractCrudScreen<VM> implements AppScreen {
 
     private Node node;
     private ObservableList<VM> items;
+    private Pagination pagination;
 
     public AbstractCrudScreen(AbstractCrudTableBuilder<VM> abstractTableBuilder, AbstractModelFormBuilder<VM> abstractModelFormBuilder) {
         this.abstractTableBuilder = abstractTableBuilder;
@@ -32,9 +34,12 @@ public abstract class AbstractCrudScreen<VM> implements AppScreen {
 
     public abstract String getId();
 
+    private final int itemsPerPage = 10;
+    private int totalItems = 0;
+
     @Override
     public Node init() {
-        if (this.node != null) {
+        if (this.node != null) {//собирает и строит экран
             return this.node;
         }
 
@@ -48,20 +53,23 @@ public abstract class AbstractCrudScreen<VM> implements AppScreen {
             this.showForm(this.emptyModel(), true, this.getRoot(event));
         });
 
+        this.totalItems = this.getTotalCount();
+        this.pagination = new Pagination(this.getPageCounts());
+        pagination.setPageFactory(page -> {
+            var pageItems = this.getItems(page + 1, this.itemsPerPage);
+            var table = this.abstractTableBuilder.build(
+                    (item, event) -> this.showForm(item, false, this.getRoot(event)),
+                    this::deleteItem
+            );
 
-        var table = this.abstractTableBuilder.build(
-                (item, event) -> this.showForm(item, false, this.getRoot(event)),
-                this::deleteItem
-        );
+            this.items = FXCollections.observableList(pageItems);
+            table.setItems(this.items);
 
-        this.items = FXCollections.observableList(this.getItems());
-        table.setItems(items);
-
-        var scrollPane = new ScrollPane(table);
+            return new ScrollPane(table);
+        });
 
         var vBox = new VBox();
-        vBox.getChildren().addAll(backBtn, newEntityBtn, scrollPane);
-
+        vBox.getChildren().addAll(backBtn, newEntityBtn, this.pagination);
         this.node = vBox;
         return this.node;
 
@@ -106,20 +114,33 @@ public abstract class AbstractCrudScreen<VM> implements AppScreen {
     private void deleteItem(VM model, int idx) {
         if (this.delete(model)) {
             this.items.remove(idx);
+            this.totalItems--;
+            this.pagination.setPageCount(this.getPageCounts());
+            var page = this.pagination.getCurrentPageIndex() >= this.getPageCounts() ? this.pagination.getCurrentPageIndex() - 1 : this.pagination.getCurrentPageIndex();
+            page = Math.max(page, 0);
+            this.pagination.setCurrentPageIndex(page);
         }
     }
 
     private boolean createItem(VM model) {
         var result = this.create(model);
-
-        var newItems = this.getItems();
-        this.items.clear();
-        this.items.addAll(newItems);
-
+        if (result) {
+            this.totalItems++;
+            this.pagination.setPageCount(this.getPageCounts());
+            this.pagination.setCurrentPageIndex(this.pagination.getCurrentPageIndex());
+        }
         return result;
     }
 
-    protected abstract List<VM> getItems();
+    private int getPageCounts() {
+        if (this.totalItems == 0) {
+            return 0;
+        }
+        return this.totalItems / this.itemsPerPage + (this.totalItems%this.itemsPerPage != 0 ? 1 : 0);
+    }
+
+    protected abstract int getTotalCount();
+    protected abstract List<VM> getItems(int page, int pageSize);
     protected abstract VM emptyModel();
     protected abstract boolean create(VM model);
     protected abstract boolean update(VM model);

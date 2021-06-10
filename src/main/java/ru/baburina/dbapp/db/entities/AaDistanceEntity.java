@@ -3,7 +3,7 @@ package ru.baburina.dbapp.db.entities;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "aa_distance", schema = "public", catalog = "postgres")
+@Table(name = "distance", schema = "public", catalog = "postgres")
 public class AaDistanceEntity {
     private int id;
     private int idSt1;

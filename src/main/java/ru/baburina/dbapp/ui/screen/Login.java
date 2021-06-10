@@ -5,7 +5,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import ru.baburina.dbapp.app.AppState;
+import ru.baburina.dbapp.app.services.UserService;
 import ru.baburina.dbapp.db.repository.UserRepository;
 import ru.baburina.dbapp.ui.MainScene;
 import ru.baburina.dbapp.ui.api.AppScreen;
@@ -13,11 +13,10 @@ import ru.baburina.dbapp.ui.api.AppScreen;
 public class Login implements AppScreen {
 
     public static final String id = "Login";
+    private final UserService service = new UserService(new UserRepository());
 
     private TextField loginField;
     private PasswordField passwordField;
-
-    private UserRepository repository = new UserRepository();
 
     @Override
     public Node init() {
@@ -56,8 +55,7 @@ public class Login implements AppScreen {
     private void onLogin() {
         var login = this.loginField.getText();
         var password = this.passwordField.getText();
-
-        var user = repository.find(login, password);
+        var user = service.find(login, password);
 
         if (user == null) {
             var alert = new Alert(Alert.AlertType.ERROR);
@@ -71,7 +69,6 @@ public class Login implements AppScreen {
             return;
         }
 
-        AppState.getInstance().setUser(user);
         MainScene.popNode();
         MainScene.show(MainMenu.id);
 

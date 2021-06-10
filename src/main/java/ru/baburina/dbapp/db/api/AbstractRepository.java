@@ -79,7 +79,4 @@ public abstract class AbstractRepository<T, K> implements Repository<T, K> {
             action.accept(session, transaction);
         });
     }
-
-
-
 }

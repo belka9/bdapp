@@ -5,11 +5,15 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import ru.baburina.dbapp.ui.MainScene;
 import ru.baburina.dbapp.ui.api.AppScreen;
+import ru.baburina.dbapp.ui.screen.crud.marshrut.MarshrutCrudScreen;
+import ru.baburina.dbapp.ui.screen.crud.station.StationCrudScreen;
+import ru.baburina.dbapp.ui.screen.crud.timetable.TimetableCrudScreen;
+import ru.baburina.dbapp.ui.screen.crud.train.TrainCrudScreen;
 import ru.baburina.dbapp.ui.screen.crud.users.UserCrudScreen;
+import ru.baburina.dbapp.ui.screen.crud.waitings.WaitingsCrudScreen;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 public class MainMenu implements AppScreen {
 
@@ -33,7 +37,12 @@ public class MainMenu implements AppScreen {
     private List<ButtonDescriptor> getButtons() {
         return Arrays.asList(
                 new ButtonDescriptor("SQL", SqlInjectorScreen.id),
-                new ButtonDescriptor("Users CRUD", UserCrudScreen.id)
+                new ButtonDescriptor("Users CRUD", UserCrudScreen.id),
+                new ButtonDescriptor("Station CRUD", StationCrudScreen.id),
+                new ButtonDescriptor("Train CRUD", TrainCrudScreen.id),
+                new ButtonDescriptor("Marshrut CRUD", MarshrutCrudScreen.id),
+                new ButtonDescriptor("Timetable CRUD", TimetableCrudScreen.id),
+                new ButtonDescriptor("Waitings CRUD", WaitingsCrudScreen.id)
         );
     }
 

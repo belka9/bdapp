@@ -14,7 +14,9 @@
       <configuration>
         <setting name="validation-enabled" value="true" />
         <setting name="provider-name" value="Hibernate" />
-        <datasource-mapping />
+        <datasource-mapping>
+          <factory-entry name="dbapp" />
+        </datasource-mapping>
         <naming-strategy-map />
       </configuration>
     </facet>
@@ -35,6 +37,7 @@
     <orderEntry type="library" name="Maven: org.openjfx:javafx-graphics:win:13" level="project" />
     <orderEntry type="library" name="Maven: org.openjfx:javafx-base:13" level="project" />
     <orderEntry type="library" name="Maven: org.openjfx:javafx-base:win:13" level="project" />
+    <orderEntry type="library" name="Maven: no.tornado:tornadofx-controls:1.0.3" level="project" />
     <orderEntry type="library" name="Maven: org.openjfx:javafx-fxml:13" level="project" />
     <orderEntry type="library" name="Maven: org.openjfx:javafx-fxml:win:13" level="project" />
     <orderEntry type="library" name="Maven: org.hibernate:hibernate-core:5.4.31.Final" level="project" />

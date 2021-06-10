@@ -21,6 +21,15 @@ public abstract class AbstractEntityService<T, E> {
         return entities.stream().map(this::mapToModel).collect(Collectors.toList());
     }
 
+    public Collection<T> getEntitesPage(int page, int pageSize) {
+        var entites = repository.getPage(pageSize, page);
+        return entites.stream().map(this::mapToModel).collect(Collectors.toList());
+    }
+
+    public int getCount() {
+        return this.repository.count();
+    }
+
     protected void createEntity(T model) {
         var entity = this.mapToEntity(model);
         repository.create(entity);

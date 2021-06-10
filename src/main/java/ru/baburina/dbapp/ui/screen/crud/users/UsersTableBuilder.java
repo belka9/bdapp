@@ -8,7 +8,6 @@ import java.util.Arrays;
 import java.util.List;
 
 public class UsersTableBuilder extends AbstractCrudTableBuilder<UserViewModel> {
-
     @Override
     protected List<TableColumn<UserViewModel, ?>> getColumns() {
         var idColumn = this.<Integer>createReadonlyColumn("Id", "id", 100);

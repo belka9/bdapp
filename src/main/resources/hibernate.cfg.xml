@@ -5,9 +5,17 @@
     <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/postgres</property>
     <property name="hibernate.show_sql">true</property>
     <property name="hibernate.connection.username">postgres</property>
-    <property name="hibernate.connection.password">123</property>
+    <property name="hibernate.connection.password">12345</property>
     <property name="hibernate.query.factory_class">org.hibernate.hql.internal.classic.ClassicQueryTranslatorFactory</property>
     <property name="hibernate.hbm2ddl.auto">update</property>
     <mapping class="ru.baburina.dbapp.db.entities.UserEntity" />
+    <mapping class="ru.baburina.dbapp.db.entities.StationEntity" />
+    <mapping class="ru.baburina.dbapp.db.entities.MarshrutPKEntity" />
+    <mapping class="ru.baburina.dbapp.db.entities.MarshrutEntity" />
+    <mapping class="ru.baburina.dbapp.db.entities.TrainEntity" />
+    <mapping class="ru.baburina.dbapp.db.entities.TimetablePKEntity" />
+    <mapping class="ru.baburina.dbapp.db.entities.TimetableEntity" />
+    <mapping class="ru.baburina.dbapp.db.entities.WaitingsEntity" />
+
 </session-factory>
 </hibernate-configuration>

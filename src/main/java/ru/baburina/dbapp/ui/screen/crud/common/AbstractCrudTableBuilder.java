@@ -29,6 +29,11 @@ public abstract class AbstractCrudTableBuilder<T> {
 
     }
 
+    protected <V> TableColumn<T, V> createReadonlyColumn(String columnName, String propertyName) {
+        return this.createReadonlyColumn(columnName, propertyName, 100);
+    }
+
+
     protected <V> TableColumn<T, V> createReadonlyColumn(String columnName, String propertyName, double minWidth) {
         var column = new TableColumn<T, V>(columnName);
         column.setMinWidth(minWidth);

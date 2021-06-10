@@ -15,7 +15,6 @@ public class UserEntity {
     public int getId() {
         return id;
     }
-
     public void setId(int id) {
         this.id = id;
     }
@@ -25,7 +24,6 @@ public class UserEntity {
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
@@ -44,7 +42,6 @@ public class UserEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         UserEntity that = (UserEntity) o;
 
         if (id != that.id) return false;
@@ -62,3 +59,9 @@ public class UserEntity {
         return result;
     }
 }
+
+
+
+
+
+
