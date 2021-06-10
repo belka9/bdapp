@@ -42,7 +42,8 @@ public class MainMenu implements AppScreen {
                 new ButtonDescriptor("Train CRUD", TrainCrudScreen.id),
                 new ButtonDescriptor("Marshrut CRUD", MarshrutCrudScreen.id),
                 new ButtonDescriptor("Timetable CRUD", TimetableCrudScreen.id),
-                new ButtonDescriptor("Waitings CRUD", WaitingsCrudScreen.id)
+                new ButtonDescriptor("Waitings CRUD", WaitingsCrudScreen.id),
+                new ButtonDescriptor("Search Train", SearchTrain.id)
         );
     }
 

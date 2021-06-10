@@ -20,7 +20,7 @@ public class StationRepository extends AbstractRepository<StationEntity, Integer
     }
 
     @Override
-    public List getAll() {
+    public List<StationEntity> getAll() {
         return this.run(s -> {
             var query = s.createQuery("FROM StationEntity u", this.getType());
             return query.list();
@@ -28,7 +28,7 @@ public class StationRepository extends AbstractRepository<StationEntity, Integer
     }
 
     @Override
-    public List getPage(int pageSize, int page) {
+    public List<StationEntity> getPage(int pageSize, int page) {
         return this.run(s -> {
             var query = s.createQuery("FROM StationEntity u", this.getType());
             return query.setFirstResult(pageSize*(page-1)).setMaxResults(pageSize).list();

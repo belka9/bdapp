@@ -7,6 +7,7 @@ import ru.baburina.dbapp.db.HibernateUtil;
 import ru.baburina.dbapp.ui.api.AppScreen;
 import ru.baburina.dbapp.ui.screen.Login;
 import ru.baburina.dbapp.ui.screen.MainMenu;
+import ru.baburina.dbapp.ui.screen.SearchTrain;
 import ru.baburina.dbapp.ui.screen.SqlInjectorScreen;
 import ru.baburina.dbapp.ui.screen.crud.marshrut.MarshrutCrudScreen;
 import ru.baburina.dbapp.ui.screen.crud.station.StationCrudScreen;
@@ -46,6 +47,7 @@ public class MainScene {
         screens.put(MarshrutCrudScreen.id, MarshrutCrudScreen::new);
         screens.put(TimetableCrudScreen.id, TimetableCrudScreen::new);
         screens.put(WaitingsCrudScreen.id, WaitingsCrudScreen::new);
+        screens.put(SearchTrain.id, SearchTrain::new);
     }
 
     private static void initDatabase() {

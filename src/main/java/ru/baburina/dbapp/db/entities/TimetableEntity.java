@@ -2,6 +2,7 @@ package ru.baburina.dbapp.db.entities;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
