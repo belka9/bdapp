@@ -35,6 +35,12 @@ public class TimetableService extends AbstractEntityService<TimetableModel, Time
         return entity;
     }
 
+    public TimetableModel getModelBuyTickets(int id, int id_station){
+        var tt = new TimetableRepository();
+        var i = tt.getIdForBuy(id, id_station);
+        return this.mapToModel(i);
+    }
+
     public Collection<TimetableModel> getAll() {
         return this.getEntities();
     }

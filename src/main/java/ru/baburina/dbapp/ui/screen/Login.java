@@ -52,6 +52,11 @@ public class Login implements AppScreen {
         return inputBlock;
     }
 
+    @Override
+    public Node init1(Object o) {
+        return null;
+    }
+
     private void onLogin() {
         var login = this.loginField.getText();
         var password = this.passwordField.getText();

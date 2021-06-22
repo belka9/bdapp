@@ -1,5 +1,6 @@
 package ru.baburina.dbapp.ui.screen.crud.marshrut;
 
+import javafx.scene.Node;
 import ru.baburina.dbapp.app.services.MarshrutService;
 import ru.baburina.dbapp.app.services.UserService;
 import ru.baburina.dbapp.db.repository.UserRepository;
@@ -65,5 +66,10 @@ public class MarshrutCrudScreen extends AbstractCrudScreen<MarshrutViewModel> {
             System.err.println(ex);
             return false;
         }
+    }
+
+    @Override
+    public Node init1(Object o) {
+        return null;
     }
 }

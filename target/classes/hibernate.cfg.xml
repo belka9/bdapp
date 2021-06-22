@@ -16,6 +16,7 @@
     <mapping class="ru.baburina.dbapp.db.entities.TimetablePKEntity" />
     <mapping class="ru.baburina.dbapp.db.entities.TimetableEntity" />
     <mapping class="ru.baburina.dbapp.db.entities.WaitingsEntity" />
+    <mapping class="ru.baburina.dbapp.db.entities.TicketsEntity" />
 
 </session-factory>
 </hibernate-configuration>

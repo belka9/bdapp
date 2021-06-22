@@ -5,12 +5,14 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import ru.baburina.dbapp.db.entities.StationEntity;
+import ru.baburina.dbapp.app.models.StationModel;
+import ru.baburina.dbapp.app.services.StationService;
+import ru.baburina.dbapp.app.services.TrainService;
 import ru.baburina.dbapp.db.repository.StationRepository;
-import ru.baburina.dbapp.db.repository.TimetableRepository;
+import ru.baburina.dbapp.db.repository.TrainRepository;
 import ru.baburina.dbapp.ui.MainScene;
 import ru.baburina.dbapp.ui.api.AppScreen;
-import tornadofx.control.DateTimePicker;
+import ru.baburina.dbapp.ui.models.BuyTicketsParams;
 
 import java.time.ZoneOffset;
 import java.util.stream.Collectors;
@@ -18,8 +20,8 @@ import java.util.stream.Collectors;
 public class SearchTrain implements AppScreen {
 
     public static final String id = "SearchTrain";
-    private final StationRepository stationRepository = new StationRepository();
-    private final TimetableRepository timetableRepository = new TimetableRepository();
+    private final StationService stationService = new StationService(new StationRepository());
+    private final TrainService trainService = new TrainService(new TrainRepository());
 
     public SearchTrain() {
     }
@@ -30,8 +32,8 @@ public class SearchTrain implements AppScreen {
         var back = new Button("Back");
         back.setOnAction(e -> MainScene.popNode());
 
-        var stations = stationRepository.getAll();
-        var stationNames = FXCollections.observableList(stations.stream().map(StationEntity::getName).collect(Collectors.toList()));
+        var stations = stationService.getStation();
+        var stationNames = FXCollections.observableList(stations.stream().map(StationModel::getName).collect(Collectors.toList()));
 
         var stationFrom = new ComboBox<String>();
         stationFrom.setItems(stationNames);
@@ -69,7 +71,6 @@ public class SearchTrain implements AppScreen {
         controlsBlock.getChildren().addAll(controls, searchButton);
 
         var result = new VBox();
-
         var resultPane = new ScrollPane();
         resultPane.setContent(result);
 
@@ -88,18 +89,30 @@ public class SearchTrain implements AppScreen {
                 return;
             }
 
-            var trains = timetableRepository.findTrainsByDauStations(st1.get().getId(), st2.get().getId(), dt1, dt2);
+            var trains = trainService.getTrains(st1.get().getId(), st2.get().getId(), dt1, dt2);
 
 
             result.getChildren().addAll(
                     trains.stream().map(x -> {
-                        var btn = new Button("Train #" + x.getNum() + " Marsh: " + x.getMarshrut().getMarshrutPk().getNum());
-                        btn.setOnAction(e -> System.out.println("Train#" + x.getNum()));
+                        var btn = new Button("Train #" + x.getTrain().getNum() + " Marsh: " + x.getTrain().getMarshNum());
+                        btn.setOnAction(e -> {
+                            var params = new BuyTicketsParams();
+                            params.setId(x.getTimetableId());
+                            params.setSt1(st1.get().getId());
+                            params.setSt2(st2.get().getId());
+
+                            MainScene.show(BuyTickets.id, params);
+                        });
                         return btn;
                     }).collect(Collectors.toList())
             );
         });
 
         return vbox;
+    }
+
+    @Override
+    public Node init1(Object o) {
+        throw new RuntimeException("Not implemented");
     }
 }

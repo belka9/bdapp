@@ -56,6 +56,11 @@ public class SqlInjectorScreen implements AppScreen {
         return stack;
     }
 
+    @Override
+    public Node init1(Object o) {
+        return null;
+    }
+
     private void onExecute() {
         final var sqlQuery = this.sql.getText();
 

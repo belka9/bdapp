@@ -1,5 +1,6 @@
 package ru.baburina.dbapp.ui.screen.crud.timetable;
 
+import javafx.scene.Node;
 import ru.baburina.dbapp.app.services.TimetableService;
 import ru.baburina.dbapp.db.repository.TimetableRepository;
 import ru.baburina.dbapp.ui.models.TimetableViewModel;
@@ -62,5 +63,10 @@ public class TimetableCrudScreen extends AbstractCrudScreen<TimetableViewModel> 
             System.err.println(ex);
             return false;
         }
+    }
+
+    @Override
+    public Node init1(Object o) {
+        return null;
     }
 }

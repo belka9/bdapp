@@ -2,6 +2,7 @@ ru\baburina\dbapp\ui\screen\crud\station\StationTableBuilder.class
 ru\baburina\dbapp\app\models\StationModel.class
 ru\baburina\dbapp\db\entities\WaitingsEntity.class
 ru\baburina\dbapp\app\models\UserModel.class
+ru\baburina\dbapp\db\entities\ScheduledTrainEntity.class
 ru\baburina\dbapp\app\services\UserService.class
 ru\baburina\dbapp\db\entities\TrainEntity_.class
 ru\baburina\dbapp\ui\screen\crud\common\AbstractModelFormBuilder$1.class
@@ -12,13 +13,17 @@ ru\baburina\dbapp\db\entities\TimetablePKEntity.class
 ru\baburina\dbapp\ui\screen\crud\train\TrainCrudScreen.class
 ru\baburina\dbapp\ui\screen\Login.class
 ru\baburina\dbapp\app\services\TimetableService.class
+ru\baburina\dbapp\db\entities\TicketsEntity.class
 ru\baburina\dbapp\db\entities\TrainEntity.class
+ru\baburina\dbapp\ui\screen\DeleteTickets.class
+ru\baburina\dbapp\app\models\ScheduledTrainModel.class
 ru\baburina\dbapp\db\entities\StationEntity.class
 ru\baburina\dbapp\ui\screen\crud\common\AbstractCrudScreen.class
 ru\baburina\dbapp\app\services\AbstractEntityService.class
 ru\baburina\dbapp\app\services\SQLService.class
 ru\baburina\dbapp\app\services\MarshrutService.class
 ru\baburina\dbapp\db\api\AbstractRepository.class
+ru\baburina\dbapp\ui\models\BuyTicketsParams.class
 ru\baburina\dbapp\ui\screen\crud\common\AbstractCrudTableBuilder.class
 ru\baburina\dbapp\db\repository\TimetableRepository.class
 ru\baburina\dbapp\ui\api\AppScreen.class
@@ -39,6 +44,7 @@ ru\baburina\dbapp\ui\models\WaitingsViewModel.class
 ru\baburina\dbapp\ui\screen\crud\common\AbstractModelFormBuilder.class
 ru\baburina\dbapp\ui\screen\MainMenu$ButtonDescriptor.class
 ru\baburina\dbapp\db\entities\TimetableEntity.class
+ru\baburina\dbapp\ui\screen\BuyTickets.class
 ru\baburina\dbapp\ui\screen\crud\common\AbstractCrudTableBuilder$TriConsumer.class
 ru\baburina\dbapp\ui\screen\crud\train\TrainFormBuilder.class
 ru\baburina\dbapp\db\entities\UserEntity_.class
@@ -46,12 +52,14 @@ ru\baburina\dbapp\ui\screen\crud\waitings\WaitingsCrudTableBuilder.class
 ru\baburina\dbapp\db\repository\StationRepository.class
 ru\baburina\dbapp\app\services\WaitingsService.class
 ru\baburina\dbapp\ui\screen\crud\marshrut\MarshrutCrudTableBuilder.class
+ru\baburina\dbapp\app\services\TicketsService.class
 ru\baburina\dbapp\ui\screen\crud\timetable\TimetableCrudScreen.class
 ru\baburina\dbapp\ui\screen\crud\marshrut\MarshrutFormBuilder.class
 ru\baburina\dbapp\db\repository\WaitingsRepository.class
 ru\baburina\dbapp\ui\screen\crud\station\StationCrudScreen.class
 ru\baburina\dbapp\ui\screen\SearchTrain.class
 ru\baburina\dbapp\ui\screen\crud\common\AbstractCrudTableBuilder$1.class
+ru\baburina\dbapp\db\entities\TicketsEntity_.class
 ru\baburina\dbapp\ui\screen\SqlInjectorScreen.class
 ru\baburina\dbapp\db\entities\MarshrutPKEntity_.class
 ru\baburina\dbapp\ui\models\MarshrutViewModel.class
@@ -65,6 +73,7 @@ ru\baburina\dbapp\app\services\BuyTickeketsService.class
 ru\baburina\dbapp\ui\screen\crud\marshrut\MarshrutCrudScreen.class
 ru\baburina\dbapp\app\services\StationService.class
 ru\baburina\dbapp\app\models\WaitingsModel.class
+ru\baburina\dbapp\db\repository\TicketsRepository.class
 ru\baburina\dbapp\ui\models\TrainViewModel.class
 ru\baburina\dbapp\db\repository\SQLRepository.class
 ru\baburina\dbapp\ui\MainScene.class
@@ -73,6 +82,7 @@ ru\baburina\dbapp\app\models\TrainModel.class
 ru\baburina\dbapp\ui\screen\crud\common\AbstractModelFormBuilder$FieldDescriptor.class
 ru\baburina\dbapp\db\entities\StationEntity_.class
 ru\baburina\dbapp\ui\screen\crud\timetable\TimetableFormBuilder.class
+ru\baburina\dbapp\app\models\TicketsCreateModel.class
 ru\baburina\dbapp\app\models\MarshrutModel.class
 ru\baburina\dbapp\ui\screen\crud\common\AbstractModelFormBuilder$FieldType.class
 ru\baburina\dbapp\ui\screen\crud\users\UserFormBuilder.class

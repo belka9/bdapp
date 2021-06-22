@@ -2,12 +2,10 @@ package ru.baburina.dbapp.db.entities;
 
 import javax.persistence.*;
 import java.time.Instant;
-import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table(name = "timetable", schema = "public", catalog = "postgres")
-//@IdClass(TimetablePKEntity.class)
 public class TimetableEntity {
 
     private TimetablePKEntity pkEntity;

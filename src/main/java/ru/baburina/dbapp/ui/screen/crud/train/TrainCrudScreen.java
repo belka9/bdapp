@@ -1,5 +1,6 @@
 package ru.baburina.dbapp.ui.screen.crud.train;
 
+import javafx.scene.Node;
 import ru.baburina.dbapp.app.services.TrainService;
 import ru.baburina.dbapp.db.repository.TrainRepository;
 import ru.baburina.dbapp.ui.models.TrainViewModel;
@@ -62,6 +63,11 @@ public class TrainCrudScreen extends AbstractCrudScreen<TrainViewModel> {
             System.err.println(ex);
             return false;
         }
+    }
+
+    @Override
+    public Node init1(Object o) {
+        return null;
     }
 }
 

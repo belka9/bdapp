@@ -34,6 +34,11 @@ public class MainMenu implements AppScreen {
         return VBox;
     }
 
+    @Override
+    public Node init1(Object o) {
+        return null;
+    }
+
     private List<ButtonDescriptor> getButtons() {
         return Arrays.asList(
                 new ButtonDescriptor("SQL", SqlInjectorScreen.id),
@@ -43,7 +48,8 @@ public class MainMenu implements AppScreen {
                 new ButtonDescriptor("Marshrut CRUD", MarshrutCrudScreen.id),
                 new ButtonDescriptor("Timetable CRUD", TimetableCrudScreen.id),
                 new ButtonDescriptor("Waitings CRUD", WaitingsCrudScreen.id),
-                new ButtonDescriptor("Search Train", SearchTrain.id)
+                new ButtonDescriptor("Search Train", SearchTrain.id),
+                new ButtonDescriptor("Drop tickets", DeleteTickets.id)
         );
     }
 

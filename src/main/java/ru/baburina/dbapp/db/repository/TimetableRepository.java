@@ -8,6 +8,7 @@ import ru.baburina.dbapp.db.api.AbstractRepository;
 import ru.baburina.dbapp.db.entities.*;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Tuple;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Root;
 import java.sql.Date;
@@ -44,14 +45,14 @@ public class TimetableRepository extends AbstractRepository<TimetableEntity, Tim
         });
     }
 
-   public List<TrainEntity> findTrainsByDauStations(int st1, int st2, Instant dt1, Instant dt2){
+   public List<ScheduledTrainEntity> findTrainsByDauStations(int st1, int st2, Instant dt1, Instant dt2){
         return this.run(s -> {
             var em = s.getEntityManagerFactory().createEntityManager();
             var cb = em.getCriteriaBuilder();
-            var query = cb.createQuery(TrainEntity.class);
+            var query = cb.createQuery();
             var tt1 = query.from(TimetableEntity.class);
             var tt2 = query.from(TimetableEntity.class);
-            query.select(tt1.get(TimetableEntity_.train));
+            query.select(cb.tuple(tt1.get(TimetableEntity_.pkEntity).get(TimetablePKEntity_.id), tt1.get(TimetableEntity_.train)));
             query.where(
                     cb.and(
                             cb.equal(tt1.get(TimetableEntity_.pkEntity).get(TimetablePKEntity_.id),
@@ -63,7 +64,50 @@ public class TimetableRepository extends AbstractRepository<TimetableEntity, Tim
                     )
             );
             query.distinct(true);
+            return em.createQuery(query).getResultList().stream().map(t -> {
+                var tuple = (Object[])t;
+                var res = new ScheduledTrainEntity();
+                res.setTimetableId((int)tuple[0]);
+                res.setTrain((TrainEntity)tuple[1]);
+                return res;
+            }).collect(Collectors.toList());
+        });
+    }
+
+    public List<TimetableEntity> getEntitiesBetween(int id, int st1, int st2) {
+        return this.run(s ->{
+            var em = s.getEntityManagerFactory().createEntityManager();
+            var cb = em.getCriteriaBuilder();
+            var query = cb.createQuery(TimetableEntity.class);
+            var tt = query.from(TimetableEntity.class);
+            var tt1 = query.from(TimetableEntity.class);
+            var tt2 = query.from(TimetableEntity.class);
+            query.select(tt);
+            query.where(cb.and(
+                    cb.equal(tt.get(TimetableEntity_.pkEntity).get(TimetablePKEntity_.id), id),
+                    cb.equal(tt1.get(TimetableEntity_.pkEntity).get(TimetablePKEntity_.id), id),
+                    cb.equal(tt1.get(TimetableEntity_.pkEntity).get(TimetablePKEntity_.stationId), st1),
+                    cb.equal(tt2.get(TimetableEntity_.pkEntity).get(TimetablePKEntity_.id), id),
+                    cb.equal(tt2.get(TimetableEntity_.pkEntity).get(TimetablePKEntity_.stationId), st2),
+                    cb.greaterThanOrEqualTo(tt.get(TimetableEntity_.dt2), tt1.get(TimetableEntity_.dt2)),
+                    cb.lessThanOrEqualTo(tt.get(TimetableEntity_.dt1), tt2.get(TimetableEntity_.dt1))
+            ));
+            query.orderBy(cb.asc(tt.get(TimetableEntity_.dt1)));
             return em.createQuery(query).getResultList();
+        });
+
+    }
+    public TimetableEntity getIdForBuy(int id, int id_station){
+        return this.run(s->{
+            var em = s.getEntityManagerFactory().createEntityManager();
+            var cb = em.getCriteriaBuilder();
+            var query = cb.createQuery(TimetableEntity.class);
+            var tt = query.from(TimetableEntity.class);
+            query.select(tt);
+            query.where(cb.and(
+                    cb.equal(tt.get(TimetableEntity_.pkEntity).get(TimetablePKEntity_.id), id),
+                    cb.equal(tt.get(TimetableEntity_.pkEntity).get(TimetablePKEntity_.stationId), id_station)));
+            return em.createQuery(query).getSingleResult();
         });
     }
 }

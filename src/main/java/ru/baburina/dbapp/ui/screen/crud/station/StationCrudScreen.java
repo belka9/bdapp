@@ -1,5 +1,6 @@
 package ru.baburina.dbapp.ui.screen.crud.station;
 
+import javafx.scene.Node;
 import ru.baburina.dbapp.app.services.StationService;
 import ru.baburina.dbapp.app.services.UserService;
 import ru.baburina.dbapp.db.repository.StationRepository;
@@ -67,5 +68,10 @@ public class StationCrudScreen extends AbstractCrudScreen<StationViewModel> {
             System.err.println(ex);
             return false;
         }
+    }
+
+    @Override
+    public Node init1(Object o) {
+        return null;
     }
 }

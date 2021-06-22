@@ -1,5 +1,6 @@
 package ru.baburina.dbapp.ui.screen.crud.users;
 
+import javafx.scene.Node;
 import ru.baburina.dbapp.app.services.UserService;
 import ru.baburina.dbapp.db.repository.UserRepository;
 import ru.baburina.dbapp.ui.models.UserViewModel;
@@ -62,5 +63,10 @@ public class UserCrudScreen extends AbstractCrudScreen<UserViewModel> {
             System.err.println(ex);
             return false;
         }
+    }
+
+    @Override
+    public Node init1(Object o) {
+        return null;
     }
 }

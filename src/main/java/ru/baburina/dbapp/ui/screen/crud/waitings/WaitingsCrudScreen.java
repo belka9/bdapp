@@ -1,4 +1,5 @@
 package ru.baburina.dbapp.ui.screen.crud.waitings;
+import javafx.scene.Node;
 import ru.baburina.dbapp.app.services.WaitingsService;
 import ru.baburina.dbapp.ui.models.WaitingsViewModel;
 import ru.baburina.dbapp.ui.screen.crud.common.AbstractCrudScreen;
@@ -59,5 +60,10 @@ public class WaitingsCrudScreen extends AbstractCrudScreen<WaitingsViewModel> {
             System.err.println(ex);
             return false;
         }
+    }
+
+    @Override
+    public Node init1(Object o) {
+        return null;
     }
 }
